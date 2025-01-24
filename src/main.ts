@@ -9,6 +9,8 @@ import {
 import { SwaggerModule } from '@nestjs/swagger';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { HttpExceptionFilter } from './http-exception.filter';
+import { Logger } from 'nestjs-pino';
 
 function setupSwagger(app: INestApplication) {
   const config = new DocumentBuilder()
@@ -22,7 +24,8 @@ function setupSwagger(app: INestApplication) {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  app.useLogger(app.get(Logger));
   const configService = app.get(ConfigService);
 
   app.setGlobalPrefix('api/v1');
@@ -34,6 +37,7 @@ async function bootstrap() {
       strategy: 'excludeAll',
     }),
   );
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   if (configService.get('NODE_ENV') === 'production') {
     app.use(helmet());
