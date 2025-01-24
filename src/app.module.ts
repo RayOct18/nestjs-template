@@ -5,7 +5,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { PostsModule } from './posts/posts.module';
+import { AccountsModule } from './accounts/accounts.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -60,7 +60,7 @@ import * as Joi from 'joi';
         },
       ],
     }),
-    PostsModule,
+    AccountsModule,
   ],
   controllers: [AppController],
   providers: [
