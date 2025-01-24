@@ -1,27 +1,34 @@
-### Get all accounts
-GET http://localhost:3000/api/v1/accounts
-
-### Get account by id
-GET http://localhost:3000/api/v1/accounts/1
-
 ### Create account
 POST http://localhost:3000/api/v1/accounts
 Content-Type: application/json
 
 {
-  "username": "testuser",
-  "email": "test@example.com",
-  "password": "password123"
+  "username": "testuser"
 }
 
+### Get all accounts
+GET http://localhost:3000/api/v1/accounts
+
+### Get account by id
+GET http://localhost:3000/api/v1/accounts/69f916b2-d61d-4d19-8bbb-6481dbaae818
+
 ### Update account
-PATCH http://localhost:3000/api/v1/accounts/1
+PATCH http://localhost:3000/api/v1/accounts/69f916b2-d61d-4d19-8bbb-6481dbaae818
 Content-Type: application/json
 
 {
-  "email": "updated@example.com",
-  "password": "newpassword123"
+  "balance": 1000
 }
 
 ### Delete account
 DELETE http://localhost:3000/api/v1/accounts/1
+
+### Transfer
+POST http://localhost:3000/api/v1/accounts/transfer
+Content-Type: application/json
+
+{
+  "fromAccountId": "69f916b2-d61d-4d19-8bbb-6481dbaae818",
+  "toAccountId": "d241e09f-0e1b-4248-b0ae-d92e701ed367",
+  "amount": 100
+}

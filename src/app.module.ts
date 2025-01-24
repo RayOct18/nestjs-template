@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { AccountsModule } from './accounts/accounts.module';
+import { DrizzleModule } from './drizzle/drizzle.module';
 import * as Joi from 'joi';
 
 const configValidationSchema = Joi.object({
@@ -65,6 +66,7 @@ const createLoggerConfig = (configService: ConfigService) => {
       ],
     }),
     AccountsModule,
+    DrizzleModule,
   ],
   controllers: [AppController],
   providers: [
