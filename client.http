@@ -1,18 +1,16 @@
-### Get all accounts
-GET http://localhost:3000/api/v1/accounts
-
-### Get account by id
-GET http://localhost:3000/api/v1/accounts/1
-
 ### Create account
 POST http://localhost:3000/api/v1/accounts
 Content-Type: application/json
 
 {
-  "username": "testuser",
-  "email": "test@example.com",
-  "password": "password123"
+  "username": "testuser"
 }
+
+### Get all accounts
+GET http://localhost:3000/api/v1/accounts
+
+### Get account by id
+GET http://localhost:3000/api/v1/accounts/1
 
 ### Update account
 PATCH http://localhost:3000/api/v1/accounts/1
