@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Account, Prisma } from '@prisma/client';
 
 @Injectable()
 export class AccountsRepository {
@@ -15,8 +16,11 @@ export class AccountsRepository {
     return this.prismaService.account.findMany();
   }
 
-  async findById(id: string) {
-    return this.prismaService.account.findUnique({
+  async findById(
+    id: string,
+    tx: Prisma.TransactionClient = this.prismaService,
+  ) {
+    return tx.account.findUnique({
       where: { id },
     });
   }
@@ -31,6 +35,38 @@ export class AccountsRepository {
   async delete(id: string) {
     return this.prismaService.account.delete({
       where: { id },
+    });
+  }
+
+  async findByIdForUpdate(id: string, tx: Prisma.TransactionClient) {
+    const account = await tx.$queryRaw<
+      Account[]
+    >`SELECT * FROM "Account" WHERE id = ${id} FOR UPDATE`;
+    if (account.length === 0) {
+      return null;
+    }
+    return account[0];
+  }
+
+  async incrementBalance(
+    id: string,
+    amount: number,
+    tx: Prisma.TransactionClient,
+  ) {
+    return tx.account.update({
+      where: { id },
+      data: { balance: { increment: amount } },
+    });
+  }
+
+  async decrementBalance(
+    id: string,
+    amount: number,
+    tx: Prisma.TransactionClient,
+  ) {
+    return tx.account.update({
+      where: { id },
+      data: { balance: { decrement: amount } },
     });
   }
 }

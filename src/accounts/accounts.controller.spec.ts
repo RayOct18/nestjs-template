@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsController } from './accounts.controller';
 import { AccountsService } from './accounts.service';
 import { AccountsRepository } from './accounts.repository';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('AccountsController', () => {
   let controller: AccountsController;
@@ -13,6 +14,10 @@ describe('AccountsController', () => {
         AccountsService,
         {
           provide: AccountsRepository,
+          useValue: {},
+        },
+        {
+          provide: PrismaService,
           useValue: {},
         },
       ],

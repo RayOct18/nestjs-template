@@ -8,11 +8,13 @@ import {
   Delete,
   ParseUUIDPipe,
   SerializeOptions,
+  HttpCode,
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { AccountResponseDto } from './dto/account.response.dto';
+import { TransferDto } from './dto/transfer.dto';
 
 @Controller('accounts')
 export class AccountsController {
@@ -50,5 +52,11 @@ export class AccountsController {
   @Delete(':id')
   async remove(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.accountsService.remove(id);
+  }
+
+  @Post('transfer')
+  @HttpCode(204)
+  async transfer(@Body() transferDto: TransferDto): Promise<void> {
+    await this.accountsService.transfer(transferDto);
   }
 }
