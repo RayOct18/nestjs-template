@@ -1,0 +1,4 @@
+npm test
+
+# 整理程式碼
+npx lint-staged
