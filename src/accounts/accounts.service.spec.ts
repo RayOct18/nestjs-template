@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsService } from './accounts.service';
 import { AccountsRepository } from './accounts.repository';
-import { PrismaService } from '../prisma/prisma.service';
+import { KyselyService } from '../kysely/kysely.service';
 
 describe('AccountsService', () => {
   let service: AccountsService;
@@ -15,7 +15,7 @@ describe('AccountsService', () => {
           useValue: {},
         },
         {
-          provide: PrismaService,
+          provide: KyselyService,
           useValue: {},
         },
       ],

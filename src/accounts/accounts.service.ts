@@ -8,14 +8,14 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { AccountsRepository } from './accounts.repository';
 import { TransferDto } from './dto/transfer.dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { KyselyService } from '../kysely/kysely.service';
 
 @Injectable()
 export class AccountsService {
   private readonly logger = new Logger(AccountsService.name);
   constructor(
     private readonly accountsRepository: AccountsRepository,
-    private readonly prismaService: PrismaService,
+    private readonly kyselyService: KyselyService,
   ) {}
 
   async create(createAccountDto: CreateAccountDto) {
@@ -44,7 +44,7 @@ export class AccountsService {
   async transfer(transferDto: TransferDto) {
     const { fromAccountId, toAccountId, amount } = transferDto;
 
-    return this.prismaService.$transaction(async (tx) => {
+    return this.kyselyService.transaction().execute(async (tx) => {
       const fromAccount = await this.accountsRepository.findByIdForUpdate(
         fromAccountId,
         tx,

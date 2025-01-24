@@ -6,7 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { AccountsModule } from './accounts/accounts.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { KyselyModule } from './kysely/kysely.module';
 import * as Joi from 'joi';
 
 const configValidationSchema = Joi.object({
@@ -16,6 +16,10 @@ const configValidationSchema = Joi.object({
   CSRF_SECRET: Joi.string().required(),
   THROTTLE_DEFAULT_TTL: Joi.number().default(60000),
   THROTTLE_DEFAULT_LIMIT: Joi.number().default(10),
+  DB_NAME: Joi.string().required(),
+  DB_HOST: Joi.string().required(),
+  DB_USER: Joi.string().required(),
+  DB_PORT: Joi.number().required(),
 });
 
 const createLoggerConfig = (configService: ConfigService) => {
@@ -66,7 +70,7 @@ const createLoggerConfig = (configService: ConfigService) => {
       ],
     }),
     AccountsModule,
-    PrismaModule,
+    KyselyModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [

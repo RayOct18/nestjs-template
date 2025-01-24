@@ -1,72 +1,73 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { Account, Prisma } from '@prisma/client';
+import { KyselyService } from '../kysely/kysely.service';
+import { KyselyClient } from 'src/kysely/kyserly.type';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class AccountsRepository {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly kyselyService: KyselyService) {}
 
   async create(username: string) {
-    return this.prismaService.account.create({
-      data: { username },
-    });
+    return this.kyselyService
+      .insertInto('Account')
+      .values({
+        id: uuid(),
+        username,
+      })
+      .returningAll()
+      .executeTakeFirst();
   }
 
   async findAll() {
-    return this.prismaService.account.findMany();
+    return this.kyselyService.selectFrom('Account').selectAll().execute();
   }
 
-  async findById(
-    id: string,
-    tx: Prisma.TransactionClient = this.prismaService,
-  ) {
-    return tx.account.findUnique({
-      where: { id },
-    });
+  async findById(id: string, tx: KyselyClient = this.kyselyService) {
+    return tx
+      .selectFrom('Account')
+      .where('id', '=', id)
+      .selectAll()
+      .executeTakeFirst();
   }
 
   async updateBalance(id: string, balance: number) {
-    return this.prismaService.account.update({
-      where: { id },
-      data: { balance },
-    });
+    return this.kyselyService
+      .updateTable('Account')
+      .set({ balance })
+      .where('id', '=', id)
+      .returningAll()
+      .executeTakeFirst();
   }
 
   async delete(id: string) {
-    return this.prismaService.account.delete({
-      where: { id },
-    });
+    return this.kyselyService
+      .deleteFrom('Account')
+      .where('id', '=', id)
+      .execute();
   }
 
-  async findByIdForUpdate(id: string, tx: Prisma.TransactionClient) {
-    const account = await tx.$queryRaw<
-      Account[]
-    >`SELECT * FROM "Account" WHERE id = ${id} FOR UPDATE`;
-    if (account.length === 0) {
-      return null;
-    }
-    return account[0];
+  async findByIdForUpdate(id: string, tx: KyselyClient) {
+    return tx
+      .selectFrom('Account')
+      .where('id', '=', id)
+      .forUpdate()
+      .selectAll()
+      .executeTakeFirst();
   }
 
-  async incrementBalance(
-    id: string,
-    amount: number,
-    tx: Prisma.TransactionClient,
-  ) {
-    return tx.account.update({
-      where: { id },
-      data: { balance: { increment: amount } },
-    });
+  async incrementBalance(id: string, amount: number, tx: KyselyClient) {
+    return tx
+      .updateTable('Account')
+      .set((eb) => ({ balance: eb('balance', '+', amount) }))
+      .where('id', '=', id)
+      .execute();
   }
 
-  async decrementBalance(
-    id: string,
-    amount: number,
-    tx: Prisma.TransactionClient,
-  ) {
-    return tx.account.update({
-      where: { id },
-      data: { balance: { decrement: amount } },
-    });
+  async decrementBalance(id: string, amount: number, tx: KyselyClient) {
+    return tx
+      .updateTable('Account')
+      .set((eb) => ({ balance: eb('balance', '-', amount) }))
+      .where('id', '=', id)
+      .execute();
   }
 }

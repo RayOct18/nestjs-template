@@ -3,7 +3,7 @@ POST http://localhost:3000/api/v1/accounts
 Content-Type: application/json
 
 {
-  "username": "testuser"
+  "username": "testuser2"
 }
 
 ### Get all accounts
@@ -29,6 +29,6 @@ Content-Type: application/json
 
 {
   "fromAccountId": "69f916b2-d61d-4d19-8bbb-6481dbaae818",
-  "toAccountId": "d241e09f-0e1b-4248-b0ae-d92e701ed369",
+  "toAccountId": "d241e09f-0e1b-4248-b0ae-d92e701ed367",
   "amount": 100
 }
