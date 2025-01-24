@@ -28,6 +28,9 @@ async function bootstrap() {
     setupSwagger(app);
   }
 
+  // Starts listening for shutdown hooks
+  app.enableShutdownHooks();
+
   await app.listen(configService.get('PORT') ?? 3000);
 }
 bootstrap();
