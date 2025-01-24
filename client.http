@@ -10,15 +10,14 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/accounts
 
 ### Get account by id
-GET http://localhost:3000/api/v1/accounts/1
+GET http://localhost:3000/api/v1/accounts/69f916b2-d61d-4d19-8bbb-6481dbaae818
 
 ### Update account
-PATCH http://localhost:3000/api/v1/accounts/1
+PATCH http://localhost:3000/api/v1/accounts/69f916b2-d61d-4d19-8bbb-6481dbaae818
 Content-Type: application/json
 
 {
-  "email": "updated@example.com",
-  "password": "newpassword123"
+  "balance": 1000
 }
 
 ### Delete account
