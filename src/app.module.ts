@@ -70,7 +70,7 @@ const createLoggerConfig = (configService: ConfigService) => {
       ],
     }),
     AccountsModule,
-    KyselyModule.forRoot(),
+    KyselyModule,
   ],
   controllers: [AppController],
   providers: [
