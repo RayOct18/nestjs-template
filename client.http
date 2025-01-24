@@ -1,26 +1,27 @@
-### Get all posts
-GET http://localhost:3000/posts
+### Get all accounts
+GET http://localhost:3000/accounts
 
-### Get post by id
-GET http://localhost:3000/posts/1
+### Get account by id
+GET http://localhost:3000/accounts/1
 
-### Create post
-POST http://localhost:3000/posts
+### Create account
+POST http://localhost:3000/accounts
 Content-Type: application/json
 
 {
-  "title": "Test Post",
-  "content": "This is a test post"
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123"
 }
 
-### Update post
-PATCH http://localhost:3000/posts/1
+### Update account
+PATCH http://localhost:3000/accounts/1
 Content-Type: application/json
 
 {
-  "title": "Updated Post",
-  "content": "This post has been updated"
+  "email": "updated@example.com",
+  "password": "newpassword123"
 }
 
-### Delete post
-DELETE http://localhost:3000/posts/1
+### Delete account
+DELETE http://localhost:3000/accounts/1
